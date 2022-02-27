@@ -8,13 +8,6 @@ public class Dijkstra {
 		double voltCost = 1;
 		String mos1 = "WBWBWWWB";
 		String mos2 = "BWBWWWWW";*/
-		//Segundo
-		int filas = 3;
-		int columnas = 3;
-		double intCost = 1;
-		double voltCost = 1;
-		String mos1 = "WBBBWBWWW";
-		String mos2 = "WWWWBWWWB";
 		//Tercero
 		/*int filas = 1;
 		int columnas = 5;
@@ -22,38 +15,45 @@ public class Dijkstra {
 		double voltCost = 1000;
 		String mos1 = "WBBBB";
 		String mos2 = "BBBWW";*/
+		//Segundo
+		int filas = 3;
+		int columnas = 3;
+		double intCost = 1;
+		double voltCost = 1;
+		String mos1 = "WBBBWBWWW";
+		String mos2 = "WWWWBWWWB";
 		Dijkstra d = new Dijkstra();
 		String[][] mosaico1 = d.getMos(mos1,filas,columnas);
 		String[][] mosaico2 = d.getMos(mos2,filas,columnas);
 		d.printMos(mosaico1);
 		d.printMos(mosaico2);
-		int[][] pares = d.getCantCol(mosaico1,mosaico2);
-		//d.printPar(pares);
-		String color = d.getMenorC(pares);
-		int[] priSec = d.getPriSec(pares);
-		int[][] crd1;
-		int[][] crd2;
-		crd1 = d.getCrd(mosaico1,priSec[0],color);
-		crd2 = d.getCrd(mosaico2,priSec[1],color);
-		//d.printCrd(color,crd1);
-		//d.printCrd(color,crd2);
-		int[][] rutas = d.getRutas(crd1,crd2);
+		//// a partir de aquí en python
+		int[][] pares = d.getCantCol(mosaico1,mosaico2); //listo
+		d.printPar(pares); //listo
+		String color = d.getMenorC(pares); //listo
+		System.out.println(color); //listo
+		int[] priSec = d.getPriSec(pares); //listo
+		System.out.println(priSec[0] + " " + priSec[1] + "\n"); //listo
+		int[][] crd1 = d.getCrd(mosaico1,priSec[0],color); //listo
+		d.printCrd(color,crd1); //listo
+		int[][] crd2 = d.getCrd(mosaico2,priSec[1],color);
+		d.printCrd(color,crd2);
+		//int[][] rutas = d.getRutas(crd1,crd2);
 		//d.printRutas(rutas);
-		rutas = d.optRutas(rutas);
+		//rutas = d.optRutas(rutas);
 		//d.printRutas(rutas);
-		rutas = d.crearCaminos(mosaico1,rutas,crd2,color);
+		//rutas = d.crearCaminos(mosaico1,rutas,crd2,color);
 		//d.printRutas(rutas);
-		int intercambios = d.getMovT(rutas,mosaico1,mosaico2,color);
-		int volteos = d.getVolT(mosaico1,mosaico2,rutas,crd2,color);
-		double minCost = d.minCost(intercambios,volteos,intCost,voltCost);
-		System.out.println("Costo mínimo: Q " + minCost);
-		System.out.println("Intercambios: " + intercambios);
-		System.out.println("Volteos: " + volteos);
-		System.out.println();
-		System.out.println("Transición: ");
-		d.printMos(mosaico1);
-		d.transMos(rutas,mosaico1,mosaico2,color,intCost,voltCost);
-		//int[][] volt = getVolt(mosaico1,crd2,color);
+		//int intercambios = d.getMovT(rutas,mosaico1,mosaico2,color);
+		//int volteos = d.getVolT(mosaico1,mosaico2,rutas,crd2,color);
+		//double minCost = d.minCost(intercambios,volteos,intCost,voltCost);
+		//System.out.println("Costo mínimo: Q " + minCost);
+		//System.out.println("Intercambios: " + intercambios);
+		//System.out.println("Volteos: " + volteos);
+		//System.out.println();
+		//System.out.println("Transición: ");
+		//d.printMos(mosaico1);
+		//d.transMos(rutas,mosaico1,mosaico2,color,intCost,voltCost);
 	}
 	void transMos(int[][] rutas,String[][] mosIni,String[][] mosFin,String color,double intCost,double voltCost) {
 		String colorS = "B";
@@ -435,10 +435,7 @@ public class Dijkstra {
 	void printCrd(String c,int[][] pares){
 		String nMosaico = c+" Ubicados\n";
 		for(int i = 0; i < pares.length; i++) {
-			for(int j = 0; j < pares[i].length; j++) {
-				nMosaico += pares[i][j]+" ";
-			}
-			nMosaico += "\n";
+				nMosaico += pares[i][0]+" , " + pares[i][1] + "\n";
 		}
 		System.out.println(nMosaico);
 	}
@@ -499,9 +496,9 @@ public class Dijkstra {
 		for(int i = 0; i < mosaico.length; i++) {
 			for(int j = 0; j < mosaico[i].length; j++) {
 				if(mosaico[i][j].equals("B")) {
-					nMosaico += "██";
-				}else {
 					nMosaico += "░░";
+				}else {
+					nMosaico += "██";
 				}
 			}
 			nMosaico += "\n";
