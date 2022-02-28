@@ -21,7 +21,7 @@ public class Dijkstra {
 		double intCost = 1;
 		double voltCost = 1;
 		String mos1 = "WBBBWBWWW";
-		String mos2 = "WWWWBWWWB";
+		String mos2 = "WWBWBWWWB";
 		Dijkstra d = new Dijkstra();
 		String[][] mosaico1 = d.getMos(mos1,filas,columnas);
 		String[][] mosaico2 = d.getMos(mos2,filas,columnas);
@@ -247,18 +247,17 @@ public class Dijkstra {
 	int[][] getOptC(int[][] rutas,int[][] falts) {
 		int[][] optimo = new int[falts.length][6];
 		int c = 0;
+		rutas = getMinRutas(rutas);
 		for(int i = 0; i < falts.length; i++) {
 			int[] punto = new int[2];
 			for(int x = 0; x < rutas.length; x++) {
 				if(rutas[x][2] > - 1  && rutas[x][3] > - 1 && rutas[x][2] == falts[i][0] && rutas[x][3] == falts[i][1]) {
-					int movs = Math.abs(rutas[x][4]) + Math.abs(rutas[x][5]);
-					int[] aux = getMinC(rutas,x,movs);
-					optimo[c][0] = aux[0];
-					optimo[c][1] = aux[1];
-					optimo[c][2] = aux[2];
-					optimo[c][3] = aux[3];
-					optimo[c][4] = aux[4];
-					optimo[c][5] = aux[5];
+					optimo[c][0] = rutas[x][0];
+					optimo[c][1] = rutas[x][1];
+					optimo[c][2] = rutas[x][2];
+					optimo[c][3] = rutas[x][3];
+					optimo[c][4] = rutas[x][4];
+					optimo[c][5] = rutas[x][5];
 					punto[0] = rutas[x][0];
 					punto[1] = rutas[x][1];
 					c ++;
@@ -267,27 +266,24 @@ public class Dijkstra {
 			}
 			if(punto != null) {
 				rutas = dscrtRutas(rutas,punto,falts[i]);
+				rutas = getMinRutas(rutas);
 			}
 		}
 		return optimo;
 	}
-	/// aquí está el problema
-	int[] getMinC(int[][] rutas,int inicio,int movI) {
-		int[] optRuta = rutas[inicio];
-		int[] vectorInicio = new int[2];
-		vectorInicio[0] = rutas[inicio][2];
-		vectorInicio[1] = rutas[inicio][3];
-		for(int x = 0; x < rutas.length; x++) {
-			if(x == inicio) continue;
-			if(rutas[x][2] == vectorInicio[0] && rutas[x][3] == vectorInicio[1]) {
-				int movs = Math.abs(rutas[x][4]) + Math.abs(rutas[x][5]);
-				if(movI > movs) {
-					movI = movs;
-					optRuta = rutas[x];
+	int[][] getMinRutas(int[][] rutas) {
+		for(int i = 0; i < rutas.length - 1; i++) {
+			for(int x = 0; x < rutas.length - i - 1; x++) {
+				int movActual = Math.abs(rutas[x][4]) + Math.abs(rutas[x][5]);
+				int movSiguiente = Math.abs(rutas[x + 1][4]) + Math.abs(rutas[x + 1][5]);
+				if(movActual > movSiguiente) {
+					int[] tmp = rutas[x + 1];
+					rutas[x + 1] = rutas[x];
+					rutas[x] = tmp;
 				}
 			}
 		}
-		return optRuta;
+		return rutas;
 	}
 	int[][] dscrtRutas(int[][] rutas,int[] punto,int[] falts) {
 		for(int x = 0; x < rutas.length; x++) {
