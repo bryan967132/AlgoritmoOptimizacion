@@ -38,10 +38,10 @@ public class Dijkstra {
 		d.printCrd(color,crd1); //listo
 		int[][] crd2 = d.getCrd(mosaico2,priSec[1],color);
 		d.printCrd(color,crd2);
-		//int[][] rutas = d.getRutas(crd1,crd2);
-		//d.printRutas(rutas);
-		//rutas = d.optRutas(rutas);
-		//d.printRutas(rutas);
+		int[][] rutas = d.getRutas(crd1,crd2);
+		d.printRutas(rutas);
+		rutas = d.optRutas(rutas);
+		d.printRutas(rutas);
 		//rutas = d.crearCaminos(mosaico1,rutas,crd2,color);
 		//d.printRutas(rutas);
 		//int intercambios = d.getMovT(rutas,mosaico1,mosaico2,color);
@@ -306,10 +306,10 @@ public class Dijkstra {
 	}
 	int[][] optRutas(int[][] rutas) {
 		int preC = cantNoMover(rutas);
-		int[][] preOpt = getNoMover(rutas,preC);
-		preC = cantDescart(preOpt,rutas);
-		int[][] rep = getDescart(preOpt,rutas,preC);
 		if(preC > 0) {
+			int[][] preOpt = getNoMover(rutas,preC);
+			preC = cantDescart(preOpt,rutas);
+			int[][] rep = getDescart(preOpt,rutas,preC);
 			preC = cantOpt(rutas,rep);
 			int[][] opt = getOpt(rutas,rep,preC);
 			return opt;
@@ -318,7 +318,7 @@ public class Dijkstra {
 	int cantNoMover(int[][] rutas) {
 		int cant = 0;
 		for(int i = 0; i < rutas.length; i++) {
-			if(rutas[i][4] + rutas[i][5] == 0) {
+			if(Math.abs(rutas[i][4]) + Math.abs(rutas[i][5]) == 0) {
 				cant ++;
 			}
 		}
@@ -414,7 +414,7 @@ public class Dijkstra {
 	}
 	void printRutas(int[][] rutas) {
 		for(int i = 0; i < rutas.length; i++) {
-			System.out.println(rutas[i][0] + "," + rutas[i][1] + " -> " + rutas[i][2] + "," + rutas[i][3] + " | PasoX: " + rutas[i][4] + " | PasoY: " +  rutas[i][5]);
+			System.out.println(rutas[i][0] + " , " + rutas[i][1] + " -> " + rutas[i][2] + " , " + rutas[i][3] + " | PasoX: " + rutas[i][4] + " | PasoY: " +  rutas[i][5]);
 		}
 		System.out.println();
 	}
